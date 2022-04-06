@@ -11,4 +11,7 @@ export const API_VERSION = 'v2.0';
 
 /** API ENDPOINTS */
 export const AUTH_ENDPOINTS = 'auth';
+export const LOGIN = 'login';
+export const REGISTER = 'register';
+
 export const NOTES_ENDPOINTS = 'notes';

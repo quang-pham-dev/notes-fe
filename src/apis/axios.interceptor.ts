@@ -4,6 +4,7 @@ import {
   setAccessTokenToLocalStorage,
 } from './../utils/localStorage';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AUTH_ENDPOINTS, LOGIN, REGISTER } from 'configs';
 
 export const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL_PROD,
@@ -45,31 +46,37 @@ axiosInstance.interceptors.response.use(
     if (!httpStatus || httpStatus === 500) {
       // Internal Server
     }
-    if (httpStatus === 401 && !originalRequest._retry) {
-      // not yet login, redirect to login
-      // handle access token expired
-      originalRequest._retry = true;
-      try {
-        const refreshToken = getRefreshToken();
-        const config = {
-          headers: {
-            Authorization: `Bearer ${refreshToken}`,
-          },
-        };
-        axios.defaults.headers.common.Authorization = config.headers.Authorization;
-        const result = await axios.post(`${process.env.REACT_APP_BASE_URL_PROD}auth/renewal`);
-        const { accessToken } = result.data.data;
-        // accessToken alway expire time to short than accessToken
-        // when accessToken expired, we send refreshToken to server verify and server will be return new accessToken and refreshToken
-        setAccessTokenToLocalStorage(accessToken);
-        axios.defaults.headers.common.Authorization = accessToken;
-        return await axiosInstance(error.config);
-      } catch (error: unknown | any) {
-        const message =
-          (error.response && error.response.data && error.response.data.message) ||
-          error.message ||
-          error.toString();
-        return Promise.reject(message);
+    if (
+      originalRequest.url !== `${AUTH_ENDPOINTS}/${LOGIN}` &&
+      originalRequest.url !== `${AUTH_ENDPOINTS}/${REGISTER}` &&
+      error.response
+    ) {
+      if (httpStatus === 401 && !originalRequest._retry) {
+        // not yet login, redirect to login
+        // handle access token expired
+        originalRequest._retry = true;
+        try {
+          const refreshToken = getRefreshToken();
+          const config = {
+            headers: {
+              Authorization: `Bearer ${refreshToken}`,
+            },
+          };
+          axios.defaults.headers.common.Authorization = config.headers.Authorization;
+          const result = await axios.post(`${process.env.REACT_APP_BASE_URL_PROD}auth/renewal`);
+          const { accessToken } = result.data.data;
+          // accessToken alway expire time to short than accessToken
+          // when accessToken expired, we send refreshToken to server verify and server will be return new accessToken and refreshToken
+          setAccessTokenToLocalStorage(accessToken);
+          axios.defaults.headers.common.Authorization = accessToken;
+          return await axiosInstance(error.config);
+        } catch (error: unknown | any) {
+          const message =
+            (error.response && error.response.data && error.response.data.message) ||
+            error.message ||
+            error.toString();
+          return Promise.reject(message);
+        }
       }
     }
     if (httpStatus === 400) {
