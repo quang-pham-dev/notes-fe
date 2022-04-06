@@ -6,7 +6,7 @@ import {
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 export const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_URL_PROD,
+  baseURL: process.env.REACT_APP_BASE_URL_PROD,
   withCredentials: true,
   timeout: 30000,
 });
@@ -57,7 +57,7 @@ axiosInstance.interceptors.response.use(
           },
         };
         axios.defaults.headers.common.Authorization = config.headers.Authorization;
-        const result = await axios.post(`${process.env.NEXT_PUBLIC_URL_PROD}auth/renewal`);
+        const result = await axios.post(`${process.env.REACT_APP_BASE_URL_PROD}auth/renewal`);
         const { accessToken } = result.data.data;
         // accessToken alway expire time to short than accessToken
         // when accessToken expired, we send refreshToken to server verify and server will be return new accessToken and refreshToken

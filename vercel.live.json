@@ -1,0 +1,7 @@
+{
+  "build": {
+    "env": {
+      "REACT_APP_BASE_URL_PROD": "https://mini-auth-api.herokuapp.com/api/"
+    }
+  }
+}
