@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState } from 'stores';
-import { loginAsync, logoutAsync, registerAsync } from './authThunkAPI';
+import { confirmEmailAsync, loginAsync, logoutAsync, registerAsync } from './authThunkAPI';
 import { User, UserResponse } from 'models';
 
 export interface AuthState {
@@ -11,6 +11,7 @@ export interface AuthState {
   currentUser: User | null;
   isError: boolean;
   errorMessage: unknown | string;
+  isConfirmed: boolean;
 }
 
 const initialState: AuthState = {
@@ -20,33 +21,20 @@ const initialState: AuthState = {
   currentUser: JSON.parse(localStorage?.getItem('user') as string) || null,
   isError: false,
   errorMessage: '',
+  isConfirmed: false,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    // login(state, action: PayloadAction<LoginPayload>) {
-    //   state.logging = true;
-    // },
-    // loginSuccess(state, action: PayloadAction<User>) {
-    //   state.isSuccess = true;
-    //   state.logging = false;
-    //   state.currentUser = action.payload;
-    // },
-    // loginFailed(state, action: PayloadAction<string>) {
-    //   state.logging = false;
-    // },
-    // logout(state) {
-    //   state.isSuccess = false;
-    //   state.currentUser = undefined;
-    // },
     clearState: (state) => {
       state.isAuthenticated = false;
       state.isFetching = false;
       state.isSuccess = false;
       state.isError = false;
       state.errorMessage = '';
+      state.isConfirmed = false;
 
       return state;
     },
@@ -98,6 +86,24 @@ const authSlice = createSlice({
         state.isError = true;
         state.errorMessage = action.payload;
         state.currentUser = null;
+      })
+      // Confirm email
+      .addCase(confirmEmailAsync.pending, (state) => {
+        state.isFetching = true;
+        state.isSuccess = false;
+        state.isConfirmed = false;
+      })
+      .addCase(confirmEmailAsync.fulfilled, (state, action: PayloadAction<any>) => {
+        state.isFetching = false;
+        state.isSuccess = true;
+        state.isConfirmed = true;
+      })
+      .addCase(confirmEmailAsync.rejected, (state, action) => {
+        state.isFetching = false;
+        state.isSuccess = false;
+        state.isConfirmed = false;
+        state.isError = true;
+        state.errorMessage = action.payload;
       });
   },
 });

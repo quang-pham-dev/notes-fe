@@ -20,15 +20,15 @@ const logoutApi = () => {
   return axiosInstance.post(endPointSignOut);
 };
 
-// refresh token user
-const refreshTokenApi = () => {
-  const endPointRefreshToken = `${AUTH_ENDPOINTS}/renewal`;
-  return axiosInstance.post(endPointRefreshToken);
+// confirm email
+const confirmEmailApi = (tokenConfirm: any) => {
+  const endPointConfirmEmail = `${AUTH_ENDPOINTS}/confirm`;
+  return axiosInstance.post(endPointConfirmEmail, tokenConfirm);
 };
 
 export const authService = {
   registerApi,
   logoutApi,
   loginApi,
-  refreshTokenApi,
+  confirmEmailApi,
 };

@@ -15,3 +15,5 @@ export const LOGIN = 'signIn';
 export const REGISTER = 'signUp';
 
 export const NOTES_ENDPOINTS = 'notes';
+
+export const EMAIL_CONFIRM_TOKEN = 'token';

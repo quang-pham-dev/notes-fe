@@ -75,3 +75,23 @@ export const logoutAsync = createAsyncThunk('auth/logout', async () => {
     toast.error(message);
   }
 });
+
+export const confirmEmailAsync = createAsyncThunk(
+  'auth/confirmEmail',
+  async (token: any, thunkAPI) => {
+    try {
+      const response = await authService.confirmEmailApi(token);
+      if (response.data.data.status === 200) {
+        toast.success('Confirm successfully');
+      }
+      return response.data;
+    } catch (error: any) {
+      const message =
+        (error.response && error.response.data && error.response.data.message) ||
+        error.message ||
+        error.toString();
+      toast.error(message);
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);

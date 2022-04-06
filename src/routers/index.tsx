@@ -32,6 +32,14 @@ export default function RoutesMain() {
             </GuestGuard>
           ),
         },
+        {
+          path: 'verify',
+          element: (
+            <GuestGuard>
+              <VerifyEmailPage />
+            </GuestGuard>
+          ),
+        },
       ],
     },
     // Admin
@@ -78,6 +86,7 @@ export default function RoutesMain() {
 // Authentication
 const LoginPage = Loadable(lazy(() => import('pages/Login/index')));
 const RegisterPage = Loadable(lazy(() => import('pages/Register/index')));
+const VerifyEmailPage = Loadable(lazy(() => import('pages/Verify/index')));
 
 // Features
 const HomePage = Loadable(lazy(() => import('pages/Home/index')));
