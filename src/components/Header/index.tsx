@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa';
 
-import { PATH_AUTH, PATH_HOME } from 'configs';
+import { PATH_AUTH } from 'configs';
 import { useAppDispatch, useAppSelector } from 'stores';
 import { logoutAsync } from 'features/auth/authThunkAPI';
 import { clearState } from 'features/auth/authSlice';
@@ -16,15 +16,15 @@ function Header() {
     dispatch(logoutAsync()).then(({ meta: { requestStatus } }) => {
       if (requestStatus === 'fulfilled') {
         dispatch(clearState());
+        navigate(`${PATH_AUTH.login}`, { replace: true });
       }
     });
-    navigate(`${PATH_HOME.root}`, { replace: true });
   };
 
   return (
     <header className="header">
       <div className="logo">
-        <Link to="/">NOTE TRACKER</Link>
+        <Link to="/">NOTES TRACKER</Link>
       </div>
       <ul>
         {currentUser ? (

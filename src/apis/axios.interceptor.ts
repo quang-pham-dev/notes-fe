@@ -4,7 +4,7 @@ import {
   setAccessTokenToLocalStorage,
 } from './../utils/localStorage';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { AUTH_ENDPOINTS, LOGIN, REGISTER } from 'configs';
+import { AUTH_ENDPOINTS, LOGIN, LOGOUT, REGISTER } from 'configs';
 
 export const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL_PROD,
@@ -49,6 +49,7 @@ axiosInstance.interceptors.response.use(
     if (
       originalRequest.url !== `${AUTH_ENDPOINTS}/${LOGIN}` &&
       originalRequest.url !== `${AUTH_ENDPOINTS}/${REGISTER}` &&
+      originalRequest.url !== `${AUTH_ENDPOINTS}/${LOGOUT}` &&
       error.response
     ) {
       if (httpStatus === 401 && !originalRequest._retry) {

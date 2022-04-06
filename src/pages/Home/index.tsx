@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from 'hooks';
 import { useAppDispatch, useAppSelector } from 'stores';
-import { clearState } from 'features/notes/notesSlice';
 import NoteForm from 'components/Form/Note';
 import NoteItem from 'components/NoteItem';
 import { fetchNoteAsync } from 'features/notes/notesThunkAPI';
@@ -16,10 +15,7 @@ const HomePage = () => {
   const { currentUser } = useAuth();
   const { notes, isLoading } = useAppSelector((state) => state.notes);
   useEffect(() => {
-    dispatch(fetchNoteAsync());
-    return () => {
-      dispatch(clearState());
-    };
+    if (currentUser) dispatch(fetchNoteAsync());
   }, [currentUser, navigate, dispatch]);
 
   if (isLoading) {

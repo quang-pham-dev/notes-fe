@@ -19,7 +19,7 @@ export const registerAsync = createAsyncThunk(
       const response = await authService.registerApi(userData);
 
       if (response.data) {
-        toast.success('Register success Please confirm your email');
+        toast.success('Register successfully Please confirm your email');
         const { user } = response.data.data;
         setUserToLocalStorage(user);
       }
@@ -72,7 +72,9 @@ export const logoutAsync = createAsyncThunk('auth/logout', async () => {
       error.message ||
       error.toString();
     removeAllLocalStorage();
-    toast.error(message);
+    if (message !== 'Unauthorized') {
+      toast.error(message);
+    }
   }
 });
 

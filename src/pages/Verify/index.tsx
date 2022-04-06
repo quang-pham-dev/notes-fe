@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 
-import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { useAuth } from 'hooks';
 import { confirmEmailAsync } from 'features/auth/authThunkAPI';
 import { useAppDispatch } from 'stores';
 import LoadingScreen from 'components/Loading/LoadingScreen';
-import { EMAIL_CONFIRM_TOKEN, PATH_AUTH } from 'configs';
+import { EMAIL_CONFIRM_TOKEN, PATH_HOME } from 'configs';
 
 const VerifyEmailPage = () => {
   const { isFetching } = useAuth();
@@ -25,7 +25,7 @@ const VerifyEmailPage = () => {
       try {
         dispatch(confirmEmailAsync({ token: token })).then(({ meta: { requestStatus } }) => {
           if (requestStatus === 'fulfilled') {
-            navigate(`${PATH_AUTH.login}`, { replace: true });
+            navigate(`${PATH_HOME.root}`, { replace: true });
           }
         });
       } catch (error) {
@@ -35,7 +35,7 @@ const VerifyEmailPage = () => {
     }
   }, [dispatch, navigate, token]);
 
-  return <>{isFetching ? <LoadingScreen /> : <Navigate to={PATH_AUTH.login} />}</>;
+  return <>{isFetching && <LoadingScreen />}</>;
 };
 
 export default VerifyEmailPage;

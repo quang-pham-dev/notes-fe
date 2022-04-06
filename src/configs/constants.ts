@@ -13,6 +13,7 @@ export const API_VERSION = 'v2.0';
 export const AUTH_ENDPOINTS = 'auth';
 export const LOGIN = 'signIn';
 export const REGISTER = 'signUp';
+export const LOGOUT = 'signOut';
 
 export const NOTES_ENDPOINTS = 'notes';
 
