@@ -3,28 +3,16 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 function NoteForm() {
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-  });
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
 
   const dispatch = useDispatch();
-
-  const { title, description } = formData;
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-  };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (title.trim() !== '' && description.trim() !== '') {
       dispatch(createNoteAsync({ title, description }));
     }
-    setFormData({ title: '', description: '' });
   };
 
   return (
@@ -36,19 +24,22 @@ function NoteForm() {
             name="title"
             id="title"
             value={title}
-            onChange={onChange}
+            onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter note title"
+            max={256}
+            min={1}
             required
           />
-          <input
-            type="text"
+          <textarea
             name="description"
             id="description"
             value={description}
-            onChange={onChange}
+            onChange={(e) => setDescription(e.target.value)}
             placeholder="Enter note description"
+            minLength={1}
+            maxLength={512}
             required
-          />
+          ></textarea>
         </div>
         <div className="form-group">
           <button className="btn btn-block" type="submit">

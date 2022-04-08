@@ -105,7 +105,7 @@ section {
 .note {
   background-color: #f4f4f4;
   margin: 5px 0;
-  padding: 20px 0 10px;
+  padding: 20px 20px;
   position: relative;
   border-radius: 10px;
 }
@@ -114,9 +114,15 @@ section {
   margin-bottom: 5px;
 }
 
+.note p {
+  text-align: left;
+}
+
 .note .time-stamp {
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 400;
+  text-align: right;
+  margin-bottom: 15px;
 }
 
 .note .close {
